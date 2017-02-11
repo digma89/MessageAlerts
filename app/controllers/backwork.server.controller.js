@@ -1,21 +1,18 @@
   var xmldoc = require('xmldoc');
+  var http = require('http');
   var str = '';
+  var arrayLastSent = []; //array that saves sent times
   exports.timefunction = function() {
-      var http = require('http');
-      //setInterval(execute, 1000);
 
-      http.get(options, callback).end();
+      setInterval(execute, 60000);
+
+
   }
   var i = 0;
 
   function execute() {
-      //code to execute
-
-      i++;
-      console.log(i);
+      http.get(options, callback).end();
   }
-
-
 
   //The url we want is: 'www.random.org/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
   var options = {
@@ -38,13 +35,34 @@
 
           var arr = document.childrenNamed("item");
           for (var i = 0; i < arr.length; i++) {
-              var result = arr[i].childNamed("description");
-              if (result == "undefine") {} else {
-                  var result1 = arr[i].childNamed("dc:date");
-                  if (result1 == "undefine") {} else {
-                      var time = "" + result1.val;
-                      var final = time.substring(time.indexOf("T") + 1, time.indexOf("."));
-                      console.log(final + " " + result.val);
+              var descriptionResult = arr[i].childNamed("description");
+              if (descriptionResult == "undefine") {} else {
+                  var description = descriptionResult.val;
+                  var dateResult = arr[i].childNamed("dc:date");
+                  if (dateResult == "undefine") {} else {
+                      var dateResultString = "" + dateResult.val;
+                      var timeFinal = dateResultString.substring(dateResultString.indexOf("T") + 1, dateResultString.indexOf("."));
+                      var hourFinal = timeFinal.substring(0, timeFinal.indexOf(":"));
+                      var affecting = "";
+                      if (description.indexOf("Bus Routes") > 0) {
+                          affecting = "Bus Routes";
+                          /* }
+                           else if (description.indexOf("Subway") > 0) {
+                                                    affecting = "Subway";*/
+                      } else {
+                          affecting = "";
+                      }
+                      //send mail if...
+
+                      if (hourFinal >= 06 && hourFinal <= 20) {
+                          if (typeof arrayLastSent[i] === "undefined") {
+                              arrayLastSent[i] = timeFinal;
+                          } else {
+                              if (arrayLastSent[i] != timeFinal) {
+                                  arrayLastSent[i] = timeFinal;
+                              }
+                          }
+                      }
                   }
               }
           }
