@@ -9,6 +9,7 @@
 /**
  * Module dependencies.
  */
+var backwork = require('./app/controllers/backwork.server.controller');
 var express = require('./config/express');
 var app = express();
 var debug = require('debug')('New folder (3):server');
@@ -35,6 +36,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 console.log('Server running at http://localhost:3000/');
+backwork.timefunction();
 /**
  * Normalize a port into a number, string, or false.
  */
