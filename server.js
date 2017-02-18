@@ -19,7 +19,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '3300');
 app.set('port', port);
 
 /**
@@ -35,8 +35,8 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-console.log('Server running at http://localhost:3000/');
-backwork.timefunction();
+console.log('Server running at http://localhost:3300/');
+//backwork.timefunction();
 /**
  * Normalize a port into a number, string, or false.
  */
